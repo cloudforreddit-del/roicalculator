@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudTalk AI Conversation Intelligence ROI Calculator</title>
+  <!--
+    This simple calculator estimates return on investment for CloudTalk's AI
+    Conversation Intelligence product. It follows the spirit of the Replicant
+    contact‑center automation ROI calculator but adapts the inputs to focus on
+    the benefits of automated call analysis and improved sales conversions.
+
+    Users enter their monthly call volume, quality‑assurance (QA) workload,
+    agent cost information and an optional sales improvement scenario. The
+    calculator then computes the monthly cost of manual QA, projects savings
+    from AI‑driven analysis (based on studies showing up to 90 % reduction in
+    call analysis time and 24 % fewer misdirected leads【533231296714605†L800-L810】),
+    estimates additional revenue from higher conversion rates, and compares
+    these benefits against the subscription cost. The result includes total
+    savings, net benefit, ROI percentage and payback period.
+
+    Note: All monetary values are assumed to be in U.S. dollars for simplicity.
+  -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background: #1b75bc;
+      color: #fff;
+      padding: 20px 30px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .section h2 {
+      font-size: 1.3em;
+      margin-bottom: 15px;
+      color: #1b75bc;
+    }
+    .field {
+      margin-bottom: 15px;
+    }
+    .field label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .field input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .field .note {
+      font-size: 0.85em;
+      color: #666;
+    }
+    button {
+      background-color: #1b75bc;
+      border: none;
+      color: #fff;
+      padding: 12px 24px;
+      font-size: 1em;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #15578d;
+    }
+    .results {
+      margin-top: 30px;
+      padding: 20px;
+      background: #e8f0fa;
+      border-radius: 6px;
+      display: none;
+    }
+    .results h3 {
+      margin-top: 0;
+      color: #1b75bc;
+    }
+    .results p {
+      margin: 8px 0;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.8em;
+      color: #777;
+      margin-top: 40px;
+    }
+    @media (min-width: 600px) {
+      .field-group {
+        display: flex;
+        gap: 20px;
+      }
+      .field-group .field {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CloudTalk AI Conversation Intelligence ROI Calculator</h1>
+    <p style="font-size:0.95em; margin-top:5px;">Estimate the return on investment from automating call analysis and improving sales outcomes</p>
+  </header>
+
+  <div class="container">
+    <!-- Call volume and QA inputs -->
+    <div class="section">
+      <h2>1. Call volume and QA workload</h2>
+      <div class="field">
+        <label for="callsPerMonth">Monthly number of calls</label>
+        <input type="number" id="callsPerMonth" placeholder="e.g. 5&nbsp;000" min="0" step="1">
+        <div class="note">How many calls are recorded in a typical month.</div>
+      </div>
+      <div class="field">
+        <label for="qaSample">Percentage of calls reviewed manually (%)</label>
+        <input type="number" id="qaSample" placeholder="e.g. 2" min="0" max="100" step="0.1">
+        <div class="note">Most contact centers only review 1–2% of calls manually【812196993496520†L266-L274】.</div>
+      </div>
+      <div class="field">
+        <label for="reviewTime">Manual review time per call (minutes)</label>
+        <input type="number" id="reviewTime" placeholder="e.g. 10" min="0" step="0.1">
+        <div class="note">Average time spent listening and scoring each selected call.</div>
+      </div>
+      <div class="field">
+        <label for="hourlyCost">Hourly cost of QA analyst ($)</label>
+        <input type="number" id="hourlyCost" placeholder="e.g. 25" min="0" step="0.1">
+        <div class="note">Fully loaded hourly rate (salary plus benefits) for employees who analyze calls【269723455180566†L167-L180】.</div>
+      </div>
+    </div>
+
+    <!-- Sales inputs -->
+    <div class="section">
+      <h2>2. Sales impact</h2>
+      <div class="field">
+        <label for="conversionRate">Current conversion rate (%)</label>
+        <input type="number" id="conversionRate" placeholder="e.g. 10" min="0" max="100" step="0.1">
+        <div class="note">Percentage of calls that result in a sale or desired action.</div>
+      </div>
+      <div class="field">
+        <label for="revenuePerSale">Average revenue per conversion ($)</label>
+        <input type="number" id="revenuePerSale" placeholder="e.g. 200" min="0" step="0.01">
+        <div class="note">Typical revenue generated from each successful conversion.</div>
+      </div>
+      <div class="field">
+        <label for="improvementPercent">Expected improvement with CI (%)</label>
+        <input type="number" id="improvementPercent" placeholder="e.g. 24" min="0" max="100" step="0.1">
+        <div class="note">Case studies show CloudTalk's AI reduced misdirected leads by 24%【533231296714605†L800-L809】 and increased sales productivity by around 30%【533231296714605†L824-L833】. Enter your estimate.</div>
+      </div>
+    </div>
+
+    <!-- Cost input -->
+    <div class="section">
+      <h2>3. Subscription cost</h2>
+      <div class="field">
+        <label for="numAgents">Number of agents using CI</label>
+        <input type="number" id="numAgents" value="10" min="1" step="1">
+        <div class="note">How many team members will use the conversation intelligence add‑on.</div>
+      </div>
+      <div class="field">
+        <label for="subscriptionCost">CloudTalk CI price per agent ($/month)</label>
+        <!-- Pre‑populate this field with CloudTalk’s early‑bird price per agent ($9)【532113472656338†L1277-L1281】 so users see the actual cost up front.  -->
+        <input type="number" id="subscriptionCost" value="9" min="0" step="0.01">
+        <div class="note">CloudTalk’s AI Conversation Intelligence is currently offered at an early‑bird price of $9 per agent per month【532113472656338†L1277-L1281】.</div>
+      </div>
+
+      <!-- Display the computed monthly subscription cost up front -->
+      <div class="field">
+        <label>Total CI subscription cost per month</label>
+        <p id="subscriptionTotal" style="font-weight:bold; margin-top:5px;">$0.00</p>
+        <div class="note">This shows the monthly cost for your selected number of agents at the current price per agent. The value updates automatically when you change the agent count.</div>
+      </div>
+    </div>
+
+    <button id="calculateBtn">Calculate ROI</button>
+
+    <!-- Results -->
+    <div class="results" id="results">
+      <h3>Estimated ROI</h3>
+      <p id="currentQaCost"></p>
+      <p id="aiQaCost"></p>
+      <p id="qaSavings"></p>
+      <p id="additionalRevenue"></p>
+      <p id="totalSavings"></p>
+      <p id="netBenefit"></p>
+      <p id="roiPercentage"></p>
+      <p id="payback"></p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Sources: ROI formula adapted from Replicant’s contact‑center automation calculator【269723455180566†L129-L181】; efficiency gains and misdirected‑lead reduction from CloudTalk case studies【533231296714605†L800-L810】.</p>
+  </div>
+
+  <script>
+    // Helper function to parse numbers safely
+    function parseInput(id) {
+      const value = document.getElementById(id).value.trim();
+      return value === '' ? NaN : parseFloat(value);
+    }
+    // Update the visible monthly subscription total whenever the number of agents or price per agent changes
+    function updateSubscriptionTotal() {
+      const numAgentsVal = parseInput('numAgents');
+      const priceVal     = parseInput('subscriptionCost');
+      if (!isNaN(numAgentsVal) && !isNaN(priceVal)) {
+        const total = numAgentsVal * priceVal;
+        // Format as currency with two decimals
+        document.getElementById('subscriptionTotal').textContent = '$' + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+    }
+
+    // Attach listeners to update subscription total when inputs change
+    document.getElementById('numAgents').addEventListener('input', updateSubscriptionTotal);
+    document.getElementById('subscriptionCost').addEventListener('input', updateSubscriptionTotal);
+
+    // Initialize the subscription total on page load
+    updateSubscriptionTotal();
+
+    // Main calculation
+    document.getElementById('calculateBtn').addEventListener('click', function() {
+      const callsPerMonth      = parseInput('callsPerMonth');
+      const qaSample           = parseInput('qaSample');
+      const reviewTime         = parseInput('reviewTime');
+      const hourlyCost         = parseInput('hourlyCost');
+      const conversionRate     = parseInput('conversionRate');
+      const revenuePerSale     = parseInput('revenuePerSale');
+      const improvementPercent = parseInput('improvementPercent');
+      const numAgents          = parseInput('numAgents');
+      const subscriptionPrice   = parseInput('subscriptionCost');
+
+      // Validate inputs
+      if (isNaN(callsPerMonth) || isNaN(qaSample) || isNaN(reviewTime) || isNaN(hourlyCost) ||
+          isNaN(conversionRate) || isNaN(revenuePerSale) || isNaN(improvementPercent) ||
+          isNaN(numAgents) || isNaN(subscriptionPrice)) {
+        alert('Please fill in all fields with numeric values.');
+        return;
+      }
+
+      // Current monthly QA cost
+      // Number of calls reviewed = callsPerMonth * qaSample% / 100
+      const callsReviewed = callsPerMonth * (qaSample / 100);
+      // Total hours spent reviewing = callsReviewed * reviewTime minutes / 60
+      const reviewHours = callsReviewed * (reviewTime / 60);
+      const currentQaCost = reviewHours * hourlyCost;
+
+      // AI reduces review time by up to 90% (efficiency factor) and reviews all calls
+      const timeSavingsFactor = 0.9; // 90% reduction from CloudTalk case study【533231296714605†L800-L805】
+      // With AI, manual review time per call drops dramatically.  Instead of
+      // manually listening to 100 % of selected calls, the tool automatically
+      // analyzes conversations, allowing managers to spend only a fraction of the
+      // original time on quality assurance.  We approximate the post‑AI cost as
+      // the current QA cost multiplied by the remaining time percentage
+      // (1 – timeSavingsFactor).  For example, a 90 % reduction in review time
+      // means the QA team spends just 10 % of the previous time.
+      const aiQaCost = currentQaCost * (1 - timeSavingsFactor);
+
+      // QA savings
+      const qaSavings = currentQaCost - aiQaCost;
+
+      // Additional revenue: conversions * revenue per sale * improvement percentage
+      // Conversions per month = callsPerMonth * conversionRate% / 100
+      const conversionsCurrent = callsPerMonth * (conversionRate / 100);
+      // Improvement in conversions = conversionsCurrent * improvementPercent / 100
+      const additionalConversions = conversionsCurrent * (improvementPercent / 100);
+      const additionalRevenue = additionalConversions * revenuePerSale;
+
+      // Total savings per month
+      const totalSavings = qaSavings + additionalRevenue;
+
+      // Total subscription cost per month
+      const totalSubscriptionCost = subscriptionPrice * numAgents;
+
+      // Net benefit after subscription cost
+      const netBenefit = totalSavings - totalSubscriptionCost;
+
+      // ROI percentage
+      const roi = (totalSubscriptionCost === 0) ? 0 : ((totalSavings - totalSubscriptionCost) / totalSubscriptionCost) * 100;
+      // Payback period in months (subscription / savings)
+      const payback = totalSavings > 0 ? (totalSubscriptionCost / totalSavings) : Infinity;
+
+      // Format numbers with 2 decimals and thousands separators
+      function formatCurrency(value) {
+        return '$' + value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+      function formatPercentage(value) {
+        return value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+      }
+      function formatNumber(value) {
+        return value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+      }
+
+      document.getElementById('currentQaCost').textContent  = 'Current monthly QA cost: ' + formatCurrency(currentQaCost);
+      document.getElementById('aiQaCost').textContent       = 'Monthly QA cost with AI: ' + formatCurrency(aiQaCost);
+      document.getElementById('qaSavings').textContent      = 'Savings from automated analysis: ' + formatCurrency(qaSavings);
+      document.getElementById('additionalRevenue').textContent = 'Additional revenue from improved conversions: ' + formatCurrency(additionalRevenue);
+      document.getElementById('totalSavings').textContent   = 'Total estimated monthly benefit: ' + formatCurrency(totalSavings);
+      document.getElementById('netBenefit').textContent     = 'Net monthly benefit after subscription: ' + formatCurrency(netBenefit);
+      document.getElementById('roiPercentage').textContent  = totalSubscriptionCost > 0 ? ('Estimated ROI: ' + formatPercentage(roi)) : 'Estimated ROI: N/A';
+      document.getElementById('payback').textContent        = totalSubscriptionCost > 0 && totalSavings > 0 ? 'Approximate payback period: ' + formatNumber(payback) + ' months' : '';
+
+      // Reveal results section
+      document.getElementById('results').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
